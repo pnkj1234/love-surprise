@@ -9,13 +9,38 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    text-align: center;
+    background: black;
+    color: white;
+    overflow: hidden;
+}
+
+/* Intro */
+#intro {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* Sections */
-.section { display: none; padding: 20px; }
-.active { display: block; }
+.section { display: none; text-align:center; padding:20px;}
+.active { display:block; }
+
+/* Chat */
+.chat-box {
+    max-width: 350px;
+    margin: auto;
+    background: #111;
+    border-radius: 15px;
+    padding: 10px;
+}
+.msg {
+    background: #262626;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 6px;
+}
 
 /* Buttons */
 button {
@@ -23,64 +48,17 @@ button {
     margin: 10px;
     border: none;
     border-radius: 20px;
-    font-size: 16px;
     cursor: pointer;
 }
-.yes { background: #28a745; color: white; }
-.no { background: #dc3545; color: white; position: fixed; }
-
-/* Chat */
-.chat-box {
-    max-width: 350px;
-    margin: auto;
-    background: #e5ddd5;
-    border-radius: 15px;
-    padding: 10px;
-}
-.msg {
-    background: #dcf8c6;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 5px;
-    text-align: left;
-    animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn {
-    from {opacity:0; transform:translateY(10px);}
-    to {opacity:1; transform:translateY(0);}
-}
-
-/* Coming Soon */
-.coming {
-    font-size: 26px;
-    animation: pulse 1.5s infinite;
-}
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
-
-/* Loader */
-.loader {
-    margin: 20px auto;
-    border: 5px solid #fff;
-    border-top: 5px solid #ff4d6d;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    100% { transform: rotate(360deg); }
-}
+.yes { background: #ff4d6d; color:white; }
+.no { background: #444; color:white; position:fixed; }
 
 /* Game */
 #gameArea {
-    position: relative;
     height: 300px;
-    background: white;
+    background: #111;
     border-radius: 10px;
+    position: relative;
     overflow: hidden;
 }
 .heart {
@@ -89,188 +67,195 @@ button {
     cursor: pointer;
 }
 
-/* Final */
-.big {
-    font-size: 22px;
-    font-weight: bold;
+/* Floating bg hearts */
+.bgHeart {
+    position: fixed;
+    animation: floatUp 6s linear infinite;
+}
+@keyframes floatUp {
+    0% {transform:translateY(100vh);opacity:0;}
+    50% {opacity:1;}
+    100% {transform:translateY(-10vh);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 AUDIO -->
-<audio id="bgMusic" loop preload="auto">
+<!-- AUDIO -->
+<audio id="music" loop>
   <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Step 1 -->
-<div class="section active" id="s1">
-    <h2>Hey 😊</h2>
-    <p>I made something small... but special for you</p>
-    <button onclick="startExperience()">Start 💌</button>
-    <br>
-    <button onclick="playMusic()">🎵 Play Music</button>
+<!-- INTRO -->
+<div id="intro">
+    <h2>Hey... I made something for you ❤️</h2>
+    <button onclick="startExperience()">Tap to Enter ✨</button>
 </div>
 
-<!-- Step 2 -->
+<!-- Chat -->
 <div class="section" id="s2">
     <div class="chat-box" id="chatBox"></div>
 </div>
 
-<!-- Step 3 -->
+<!-- Trick -->
 <div class="section" id="s3">
-    <h3>Try clicking NO 😏</h3>
+    <h3>Try saying NO 😏</h3>
     <button class="yes" onclick="next(4)">Okay 😄</button>
     <button class="no" id="noBtn">No 😅</button>
 </div>
 
-<!-- Step 4 -->
+<!-- Proposal -->
 <div class="section" id="s4">
     <h2>Do you wanna go on a date with me? ❤️</h2>
-    <p style="font-style: italic;">"Ek simple si coffee… but good company 😉"</p>
     <button class="yes" onclick="next(5)">Yes 😍</button>
 </div>
 
-<!-- Step 5 -->
+<!-- Coming -->
 <div class="section" id="s5">
-    <h2 class="coming">Date coming soon... 💖</h2>
-    <p>Trust me… it'll be worth it ✨</p>
-    <div class="loader"></div>
+    <h2>Date coming soon... 💖</h2>
 </div>
 
-<!-- Step 6 -->
+<!-- Game -->
 <div class="section" id="s6">
     <h3>Catch the hearts 💖</h3>
     <div id="gameArea"></div>
     <p id="score">Score: 0</p>
 </div>
 
-<!-- Step 7 -->
+<!-- Final -->
 <div class="section" id="s7">
-    <h2 class="big">Okay… now honestly 💖</h2>
-    <p>I think I already lost this game…</p>
-    <p><b>Because I kinda like you… a little more than I planned ❤️</b></p>
-    <p>So yeah… now it’s your turn 😉</p>
+    <h2>One last thing… 💖</h2>
+    <p>
+    Na plan tha… na intention tha…<br><br>
+    Bas tum mile… aur sab special lagne laga ❤️<br><br>
+    Shayad thoda zyada hi pasand aa gaye ho tum…
+    </p>
 </div>
 
 <script>
 
-/* Navigation */
-function next(n) {
-    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-    document.getElementById("s" + n).classList.add("active");
+/* Start */
+function startExperience(){
+    document.getElementById("intro").style.display="none";
+    document.getElementById("music").play(); // guaranteed after click
+    next(2);
+    startBgHearts();
+}
 
-    if(n === 2){
-        document.getElementById("chatBox").innerHTML = "";
+/* Navigation */
+function next(n){
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    document.getElementById("s"+n).classList.add("active");
+
+    if(n===2){
+        document.getElementById("chatBox").innerHTML="";
         startChat();
     }
 
-    if(n === 5){
-        setTimeout(() => next(6), 3000);
+    if(n===5){
+        setTimeout(()=>{
+            next(6);
+            startGame(); // start game ONLY when visible
+        },2000);
     }
 }
 
-/* MUSIC */
-function startExperience(){
-    playMusic();
-    next(2);
-}
-
-function playMusic(){
-    const music = document.getElementById("bgMusic");
-    music.play().catch(() => {
-        alert("Tap again to play music 🎵");
-    });
-}
-
 /* Chat */
-const messages = [
-    "Hey 😊",
-    "Random sa thought aaya tha...",
-    "Ki tumse baat karna is kinda my favorite part of the day",
-    "Bina reason bhi smile aa jati hai 😄",
-    "And I didn’t plan this...",
-    "But I think you’re becoming a little important to me ❤️",
-    "So instead of overthinking...",
-    "I thought I should just ask you this..."
+const messages=[
+"Hey 😊",
+"Ek baat bolu…",
+"Tumse baat karna… acha lagta hai",
+"Bina reason smile aa jati hai",
+"And you’re becoming special ❤️"
 ];
 
-function typeMessage(text, callback) {
-    const chatBox = document.getElementById("chatBox");
-    const msgDiv = document.createElement("div");
-    msgDiv.className = "msg";
-    chatBox.appendChild(msgDiv);
+function typeMessage(text,cb){
+    let box=document.getElementById("chatBox");
+    let div=document.createElement("div");
+    div.className="msg";
+    box.appendChild(div);
 
-    let i = 0;
-    let typing = setInterval(() => {
-        msgDiv.innerHTML += text.charAt(i);
-        i++;
-        if (i >= text.length) {
-            clearInterval(typing);
-            if (callback) setTimeout(callback, 700);
+    let i=0;
+    let t=setInterval(()=>{
+        div.innerHTML+=text[i++];
+        if(i>=text.length){
+            clearInterval(t);
+            if(cb)setTimeout(cb,600);
         }
-    }, 40);
+    },40);
 }
 
-function startChat() {
-    let i = 0;
-    function nextMsg() {
-        if (i < messages.length) {
-            typeMessage(messages[i], nextMsg);
+function startChat(){
+    let i=0;
+    function nextMsg(){
+        if(i<messages.length){
+            typeMessage(messages[i],nextMsg);
             i++;
-        } else {
-            setTimeout(() => next(3), 1000);
-        }
+        } else setTimeout(()=>next(3),1000);
     }
     nextMsg();
 }
 
 /* Moving NO */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", move);
-noBtn.addEventListener("touchstart", move);
+let noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.left=Math.random()*window.innerWidth+"px";
+    noBtn.style.top=Math.random()*window.innerHeight+"px";
+});
 
-function move() {
-    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+/* GAME FIX */
+let score=0;
+let gameInterval;
+
+function startGame(){
+    score=0;
+    document.getElementById("score").innerText="Score: 0";
+    let gameArea=document.getElementById("gameArea");
+
+    gameInterval=setInterval(()=>{
+        let h=document.createElement("div");
+        h.innerHTML="❤️";
+        h.className="heart";
+        h.style.left=Math.random()*90+"%";
+        h.style.top="0px";
+
+        h.onclick=function(){
+            score++;
+            document.getElementById("score").innerText="Score: "+score;
+            h.remove();
+            if(score>=10){
+                clearInterval(gameInterval);
+                next(7);
+            }
+        };
+
+        gameArea.appendChild(h);
+
+        let fall=setInterval(()=>{
+            let top=parseInt(h.style.top);
+            if(top>280){
+                h.remove();
+                clearInterval(fall);
+            } else {
+                h.style.top=(top+5)+"px";
+            }
+        },50);
+
+    },800);
 }
 
-/* Game */
-let score = 0;
-const gameArea = document.getElementById("gameArea");
-
-function spawnHeart() {
-    const heart = document.createElement("div");
-    heart.innerHTML = "❤️";
-    heart.className = "heart";
-    heart.style.left = Math.random() * 90 + "%";
-    heart.style.top = "0px";
-
-    heart.onclick = () => {
-        score++;
-        document.getElementById("score").innerText = "Score: " + score;
-        heart.remove();
-
-        if(score >= 10){
-            next(7);
-        }
-    };
-
-    gameArea.appendChild(heart);
-
-    let fall = setInterval(() => {
-        let top = parseInt(heart.style.top);
-        if(top > 280){
-            heart.remove();
-            clearInterval(fall);
-        } else {
-            heart.style.top = top + 5 + "px";
-        }
-    }, 50);
+/* Background hearts */
+function startBgHearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.innerHTML="❤️";
+        h.className="bgHeart";
+        h.style.left=Math.random()*100+"%";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },400);
 }
-
-setInterval(spawnHeart, 1000);
 
 </script>
 
