@@ -1,180 +1,277 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Someone Special ❤️</title>
+<title>For You ❤️</title>
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(to right, #ff9a9e, #fad0c4);
-    color: #333;
     margin: 0;
-    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    text-align: center;
 }
 
-h1 {
-    font-size: 2rem;
-}
+/* Sections */
+.section { display: none; padding: 20px; }
+.active { display: block; }
 
-.btn {
+/* Buttons */
+button {
     padding: 12px 20px;
-    font-size: 16px;
     margin: 10px;
     border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.yes { background: #28a745; color: white; }
+.no { background: #dc3545; color: white; position: fixed; }
+
+/* Chat */
+.chat-box {
+    max-width: 350px;
+    margin: auto;
+    background: #e5ddd5;
+    border-radius: 15px;
+    padding: 10px;
+}
+.msg {
+    background: #dcf8c6;
+    padding: 10px;
     border-radius: 10px;
+    margin: 5px;
+    text-align: left;
+    animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* Coming Soon */
+.coming {
+    font-size: 26px;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Loader */
+.loader {
+    margin: 20px auto;
+    border: 5px solid #fff;
+    border-top: 5px solid #ff4d6d;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* Game */
+#gameArea {
+    position: relative;
+    height: 300px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.heart {
+    position: absolute;
+    font-size: 24px;
     cursor: pointer;
 }
 
-#yesBtn {
-    background: #28a745;
-    color: white;
-}
-
-#noBtn {
-    background: #dc3545;
-    color: white;
-    position: fixed;
-}
-
-#message, #puzzleSection, #scratchSection {
-    display: none;
-    margin-top: 20px;
-}
-
-canvas {
-    width: 90%;
-    max-width: 300px;
-    height: auto;
-    border: 2px solid #fff;
-    margin-top: 20px;
-}
-
-.container {
-    max-width: 400px;
-    margin: auto;
+/* Final */
+.big {
+    font-size: 22px;
+    font-weight: bold;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- 🎵 AUDIO -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
+</audio>
 
-<h1>Hey 😊</h1>
-<h3>I have something to ask you...</h3>
-
-<div id="question">
-    <h3>Do you wanna date me? ❤️</h3>
-    <button id="yesBtn" class="btn">Yes 😍</button>
-    <button id="noBtn" class="btn">No 😅</button>
+<!-- Step 1 -->
+<div class="section active" id="s1">
+    <h2>Hey 😊</h2>
+    <p>I made something small... but special for you</p>
+    <button onclick="startExperience()">Start 💌</button>
+    <br>
+    <button onclick="playMusic()">🎵 Play Music</button>
 </div>
 
-<div id="message">
-    <h2>Yayyy!!! ❤️🥳</h2>
-    <p>You just made my day... actually my whole life better 😄</p>
-    <p>Get ready for lots of smiles, bad jokes & good memories 💫</p>
-    <button onclick="showPuzzle()">Next Surprise 🎁</button>
+<!-- Step 2 -->
+<div class="section" id="s2">
+    <div class="chat-box" id="chatBox"></div>
 </div>
 
-<div id="puzzleSection">
-    <h3>Let's solve our little puzzle 🧩</h3>
-    <canvas id="puzzleCanvas" width="300" height="300"></canvas>
-    <button onclick="showScratch()">Final Surprise ✨</button>
+<!-- Step 3 -->
+<div class="section" id="s3">
+    <h3>Try clicking NO 😏</h3>
+    <button class="yes" onclick="next(4)">Okay 😄</button>
+    <button class="no" id="noBtn">No 😅</button>
 </div>
 
-<div id="scratchSection">
-    <h3>Scratch to reveal 💖</h3>
-    <canvas id="scratchCanvas" width="300" height="150"></canvas>
-    <p>Hint: Use your finger 😉</p>
+<!-- Step 4 -->
+<div class="section" id="s4">
+    <h2>Do you wanna go on a date with me? ❤️</h2>
+    <p style="font-style: italic;">"Ek simple si coffee… but good company 😉"</p>
+    <button class="yes" onclick="next(5)">Yes 😍</button>
 </div>
 
+<!-- Step 5 -->
+<div class="section" id="s5">
+    <h2 class="coming">Date coming soon... 💖</h2>
+    <p>Trust me… it'll be worth it ✨</p>
+    <div class="loader"></div>
+</div>
+
+<!-- Step 6 -->
+<div class="section" id="s6">
+    <h3>Catch the hearts 💖</h3>
+    <div id="gameArea"></div>
+    <p id="score">Score: 0</p>
+</div>
+
+<!-- Step 7 -->
+<div class="section" id="s7">
+    <h2 class="big">Okay… now honestly 💖</h2>
+    <p>I think I already lost this game…</p>
+    <p><b>Because I kinda like you… a little more than I planned ❤️</b></p>
+    <p>So yeah… now it’s your turn 😉</p>
 </div>
 
 <script>
-/* --- NO BUTTON (MOBILE SAFE) --- */
-const noBtn = document.getElementById("noBtn");
 
-function moveNoButton() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 100);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
+/* Navigation */
+function next(n) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById("s" + n).classList.add("active");
 
-noBtn.addEventListener("touchstart", moveNoButton);
-noBtn.addEventListener("mouseover", moveNoButton);
-
-/* --- YES BUTTON --- */
-document.getElementById("yesBtn").onclick = function() {
-    document.getElementById("question").style.display = "none";
-    document.getElementById("message").style.display = "block";
-};
-
-/* --- PUZZLE --- */
-function showPuzzle() {
-    document.getElementById("message").style.display = "none";
-    document.getElementById("puzzleSection").style.display = "block";
-    drawPuzzle();
-}
-
-function drawPuzzle() {
-    const canvas = document.getElementById("puzzleCanvas");
-    const ctx = canvas.getContext("2d");
-
-    const img = new Image();
-    img.src = "https://via.placeholder.com/300"; // replace with your image
-
-    img.onload = function() {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
-}
-
-/* --- SCRATCH CARD (TOUCH SUPPORT) --- */
-function showScratch() {
-    document.getElementById("puzzleSection").style.display = "none";
-    document.getElementById("scratchSection").style.display = "block";
-    initScratch();
-}
-
-function initScratch() {
-    const canvas = document.getElementById("scratchCanvas");
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = "#999";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.globalCompositeOperation = "destination-out";
-
-    function scratch(x, y) {
-        ctx.beginPath();
-        ctx.arc(x, y, 15, 0, Math.PI * 2);
-        ctx.fill();
+    if(n === 2){
+        document.getElementById("chatBox").innerHTML = "";
+        startChat();
     }
 
-    // Mouse
-    canvas.addEventListener("mousemove", (e) => {
-        if (e.buttons === 1) {
-            const rect = canvas.getBoundingClientRect();
-            scratch(e.clientX - rect.left, e.clientY - rect.top);
-        }
-    });
-
-    // Touch
-    canvas.addEventListener("touchmove", (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const touch = e.touches[0];
-        scratch(touch.clientX - rect.left, touch.clientY - rect.top);
-    });
-
-    // Message
-    ctx.globalCompositeOperation = "source-over";
-    ctx.font = "18px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText("I ❤️ You", 90, 80);
+    if(n === 5){
+        setTimeout(() => next(6), 3000);
+    }
 }
+
+/* MUSIC */
+function startExperience(){
+    playMusic();
+    next(2);
+}
+
+function playMusic(){
+    const music = document.getElementById("bgMusic");
+    music.play().catch(() => {
+        alert("Tap again to play music 🎵");
+    });
+}
+
+/* Chat */
+const messages = [
+    "Hey 😊",
+    "Random sa thought aaya tha...",
+    "Ki tumse baat karna is kinda my favorite part of the day",
+    "Bina reason bhi smile aa jati hai 😄",
+    "And I didn’t plan this...",
+    "But I think you’re becoming a little important to me ❤️",
+    "So instead of overthinking...",
+    "I thought I should just ask you this..."
+];
+
+function typeMessage(text, callback) {
+    const chatBox = document.getElementById("chatBox");
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "msg";
+    chatBox.appendChild(msgDiv);
+
+    let i = 0;
+    let typing = setInterval(() => {
+        msgDiv.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+            clearInterval(typing);
+            if (callback) setTimeout(callback, 700);
+        }
+    }, 40);
+}
+
+function startChat() {
+    let i = 0;
+    function nextMsg() {
+        if (i < messages.length) {
+            typeMessage(messages[i], nextMsg);
+            i++;
+        } else {
+            setTimeout(() => next(3), 1000);
+        }
+    }
+    nextMsg();
+}
+
+/* Moving NO */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", move);
+noBtn.addEventListener("touchstart", move);
+
+function move() {
+    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+}
+
+/* Game */
+let score = 0;
+const gameArea = document.getElementById("gameArea");
+
+function spawnHeart() {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.className = "heart";
+    heart.style.left = Math.random() * 90 + "%";
+    heart.style.top = "0px";
+
+    heart.onclick = () => {
+        score++;
+        document.getElementById("score").innerText = "Score: " + score;
+        heart.remove();
+
+        if(score >= 10){
+            next(7);
+        }
+    };
+
+    gameArea.appendChild(heart);
+
+    let fall = setInterval(() => {
+        let top = parseInt(heart.style.top);
+        if(top > 280){
+            heart.remove();
+            clearInterval(fall);
+        } else {
+            heart.style.top = top + 5 + "px";
+        }
+    }, 50);
+}
+
+setInterval(spawnHeart, 1000);
+
 </script>
 
 </body>
